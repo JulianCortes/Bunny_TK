@@ -7,7 +7,7 @@ public class MeshCombineWizard : ScriptableWizard
     public GameObject parentOfObjectsToCombine;
     public int vertexCount;
 
-    [MenuItem("Tools/Mesh Combine Wizard")]
+    [MenuItem("Bunny_TK/Mesh Combine Wizard")]
     static void CreateWizard()
     {
         ScriptableWizard.DisplayWizard<MeshCombineWizard>("Mesh Combine Wizard");

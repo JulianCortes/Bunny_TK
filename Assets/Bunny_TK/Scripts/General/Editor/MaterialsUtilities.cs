@@ -7,7 +7,7 @@ namespace Bunny_TK.Utils
 {
     public class MaterialsUtilities
     {
-        [MenuItem("Utilities/Materials/Select all Materials")]
+        [MenuItem("Bunny_TK/Mesh \x8B& Materials/Materials/Select all Materials")]
         public static void SelectAllMaterialsUsed()
         {
             var transforms = Selection.transforms;
@@ -30,7 +30,7 @@ namespace Bunny_TK.Utils
             Selection.objects = mats.ToArray();
         }
 
-        [MenuItem("Utilities/Materials/Select all Child Renderer")]
+        [MenuItem("Bunny_TK/Mesh \x8B& Materials/Select all Child Renderer")]
         public static void SelectAllChildRenderers()
         {
             var transforms = Selection.transforms;

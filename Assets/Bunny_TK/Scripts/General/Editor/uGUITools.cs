@@ -6,7 +6,7 @@ namespace Protom.WallT.Core
 
 	public class uGUITools : MonoBehaviour
 	{
-		[MenuItem("uGUI/Anchors to Corners %'")]
+		[MenuItem("Bunny_TK/uGUI/Anchors to Corners %'")]
 		static void AnchorsToCorners ()
 		{
 			foreach (Transform transform in Selection.transforms) {
@@ -27,7 +27,7 @@ namespace Protom.WallT.Core
 			}
 		}
 
-		[MenuItem("uGUI/Corners to Anchors %]")]
+		[MenuItem("Bunny_TK/uGUI/Corners to Anchors %]")]
 		static void CornersToAnchors ()
 		{
 			foreach (Transform transform in Selection.transforms) {
@@ -40,13 +40,13 @@ namespace Protom.WallT.Core
 			}
 		}
 
-		[MenuItem("uGUI/Mirror Horizontally Around Anchors %;")]
+		[MenuItem("Bunny_TK/uGUI/Mirror Horizontally Around Anchors %;")]
 		static void MirrorHorizontallyAnchors ()
 		{
 			MirrorHorizontally (false);
 		}
 
-		[MenuItem("uGUI/Mirror Horizontally Around Parent Center %:")]
+		[MenuItem("Bunny_TK/uGUI/Mirror Horizontally Around Parent Center %:")]
 		static void MirrorHorizontallyParent ()
 		{
 			MirrorHorizontally (true);
@@ -75,13 +75,13 @@ namespace Protom.WallT.Core
 			}
 		}
 
-		[MenuItem("uGUI/Mirror Vertically Around Anchors %[")]
+		[MenuItem("Bunny_TK/uGUI/Mirror Vertically Around Anchors %[")]
 		static void MirrorVerticallyAnchors ()
 		{
 			MirrorVertically (false);
 		}
 	
-		[MenuItem("uGUI/Mirror Vertically Around Parent Center %\"")]
+		[MenuItem("Bunny_TK/uGUI/Mirror Vertically Around Parent Center %\"")]
 		static void MirrorVerticallyParent ()
 		{
 			MirrorVertically (true);

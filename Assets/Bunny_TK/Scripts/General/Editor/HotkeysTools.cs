@@ -11,7 +11,7 @@ public class HotkeysTools : MonoBehaviour
     static Transform _currentParent;
 
     #region GameObject Utilities
-    [MenuItem("Utilities/GameObject/Toggle active %q")]
+    [MenuItem("Bunny_TK/GameObject/Toggle active %q")]
     static void ToggleActiveGameObject()
     {
         if (Selection.transforms != null && Selection.transforms.Length > 0)
@@ -24,14 +24,14 @@ public class HotkeysTools : MonoBehaviour
         }
     }
 
-    [MenuItem("Utilities/GameObject/Toggle active %q", true)]
+    [MenuItem("Bunny_TK/GameObject/Toggle active %q", true)]
     static bool ValidateToggleActiveGameObject()
     {
         return Selection.transforms != null && Selection.transforms.Length > 0;
     }
 
 
-    [MenuItem("Utilities/GameObject/Set Current Parent %w")]
+    [MenuItem("Bunny_TK/GameObject/Set Current Parent %w")]
     static void SetCurrentParent()
     {
         if (Selection.transforms != null && Selection.transforms.Length == 1)
@@ -41,7 +41,7 @@ public class HotkeysTools : MonoBehaviour
         }
     }
 
-    [MenuItem("Utilities/GameObject/Set child to Current Parent %e")]
+    [MenuItem("Bunny_TK/GameObject/Set child to Current Parent %e")]
     static void SetParentSelection()
     {
         if (_currentParent != null && Selection.transforms != null && Selection.transforms.Length > 0)
@@ -50,9 +50,13 @@ public class HotkeysTools : MonoBehaviour
                 Undo.SetTransformParent(t, _currentParent, "UtilSetChild");
             EditorGUIUtility.PingObject(_currentParent.gameObject);
         }
+        else
+        {
+            Debug.LogWarning("No current selected parent!");
+        }
     }
 
-    [MenuItem("Utilities/GameObject/Create Empty Child %#q")]
+    [MenuItem("Bunny_TK/GameObject/Create Empty Child %#q")]
     static void CreateEmpty()
     {
         if (Selection.activeTransform != null)

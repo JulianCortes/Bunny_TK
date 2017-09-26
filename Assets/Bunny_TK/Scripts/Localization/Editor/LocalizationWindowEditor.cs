@@ -43,7 +43,7 @@ namespace Bunny_TK.Localization
             All
         }
         private SearchType searchMask;
-        [MenuItem("Utilities/Localization Editor")]
+        [MenuItem("Bunny_TK/Localization/Localization Editor")]
         public static void Init()
         {
             // Get existing open window or if none, make a new one:
