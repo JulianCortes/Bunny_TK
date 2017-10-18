@@ -12,7 +12,11 @@ Main Utils:
     - GetComponentInChildren<Renderer>() in editor.
     - Select all materials of selected gameobjects.
     - Combine meshes
-    
+  
+  - Bezier (WIP) http://catlikecoding.com/unity/tutorials/curves-and-splines/
+    - Create/Edit Bezier curves and splines.
+    - Samples of utlizations.
+  
   - Localization
     - Basic localization of Texts.
     - Basic localization of Audio.
