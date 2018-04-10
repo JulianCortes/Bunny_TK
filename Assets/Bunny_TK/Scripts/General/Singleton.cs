@@ -4,7 +4,7 @@ namespace Bunny_TK.Utils
 {
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
-        protected static T instance;
+        private static T instance;
 
         public static T Instance
         {
@@ -40,6 +40,17 @@ namespace Bunny_TK.Utils
             get
             {
                 return instance != null;
+            }
+        }
+        private void Awake()
+        {
+            if (instance == null)
+                instance = this as T;
+
+            if (instance != this as T)
+            {
+                Debug.LogError("Found another instance. Destroying this " + name + "!", this);
+                Destroy(this.gameObject);
             }
         }
     }
