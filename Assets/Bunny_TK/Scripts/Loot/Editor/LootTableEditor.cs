@@ -2,75 +2,76 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-
-[CustomEditor(typeof(LootTableScriptableObject))]
-public class LootTableEditor : Editor
+namespace Bunny_TK.Loot
 {
-    private bool tableIsLoaded;
-    private const float controlsWidth = 20f;
-    private const float percentWidth = 70f;
-
-    private LootTableScriptableObject _lootTable { get { return target as LootTableScriptableObject; } }
-
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(LootTableScriptableObject))]
+    public class LootTableEditor : Editor
     {
+        private bool tableIsLoaded;
+        private const float controlsWidth = 20f;
+        private const float percentWidth = 70f;
 
-        EditorGUI.BeginChangeCheck();
-        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        GUILayout.Space(3);
+        private LootTableScriptableObject _lootTable { get { return target as LootTableScriptableObject; } }
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("tableName"));
-        if (EditorGUI.EndChangeCheck())
+        public override void OnInspectorGUI()
         {
-            serializedObject.ApplyModifiedProperties();
-        }
-        tableIsLoaded = _lootTable.loots != null && _lootTable.loots.Count > 0;
 
-        if (tableIsLoaded)
-        {
+            EditorGUI.BeginChangeCheck();
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            GUILayout.Space(3);
 
-            GUILayout.BeginVertical();
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("tableName"));
+            if (EditorGUI.EndChangeCheck())
+            {
+                serializedObject.ApplyModifiedProperties();
+            }
+            tableIsLoaded = _lootTable.loots != null && _lootTable.loots.Count > 0;
+
+            if (tableIsLoaded)
+            {
+                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+
+                GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
-                    EditorGUILayout.TextField("Name", EditorStyles.boldLabel);
-                    EditorGUILayout.TextField("Additional", EditorStyles.boldLabel);
-                    EditorGUILayout.TextField("GameObject", EditorStyles.boldLabel);
-                    EditorGUILayout.TextField("Weight", EditorStyles.boldLabel);
-                    EditorGUILayout.TextField("%", EditorStyles.boldLabel, GUILayout.Width(percentWidth));
-                    EditorGUILayout.TextField("", EditorStyles.boldLabel, GUILayout.Width(controlsWidth));
+                EditorGUILayout.TextField("Name", EditorStyles.boldLabel);
+                EditorGUILayout.TextField("Additional", EditorStyles.boldLabel);
+                EditorGUILayout.TextField("GameObject", EditorStyles.boldLabel);
+                EditorGUILayout.TextField("Weight", EditorStyles.boldLabel);
+                EditorGUILayout.TextField("%", EditorStyles.boldLabel, GUILayout.Width(percentWidth));
+                EditorGUILayout.TextField("", EditorStyles.boldLabel, GUILayout.Width(controlsWidth));
                 GUILayout.EndHorizontal();
 
-            for (int i = 0; i < _lootTable.loots.Count; i++)
-            {
-                CurrentLootGUI(_lootTable.loots[i]);
-                _lootTable.UpdatePercentages();
+                for (int i = 0; i < _lootTable.loots.Count; i++)
+                {
+                    CurrentLootGUI(_lootTable.loots[i]);
+                    _lootTable.UpdatePercentages();
+                }
+                GUILayout.EndVertical();
+                EditorGUILayout.EndVertical();
+
             }
-            GUILayout.EndVertical();
-            EditorGUILayout.EndVertical();
+            GUILayout.Space(3);
+            if (GUILayout.Button("Add"))
+            {
+                if (_lootTable.loots == null)
+                    _lootTable.loots = new List<Loot>();
+                _lootTable.loots.Add(new Loot());
+            }
 
-        }
-        GUILayout.Space(3);
-        if (GUILayout.Button("Add"))
-        {
-            if (_lootTable.loots == null)
+            if (GUILayout.Button("Clear"))
                 _lootTable.loots = new List<Loot>();
-            _lootTable.loots.Add(new Loot());
+
+            Undo.RecordObject(target, "");
+            GUILayout.Space(3);
+            EditorGUILayout.EndVertical();
         }
 
-        if (GUILayout.Button("Clear"))
-            _lootTable.loots = new List<Loot>();
+        private void CurrentLootGUI(Loot loot)
+        {
+            if (loot == null)
+                return;
 
-        Undo.RecordObject(target, "");
-        GUILayout.Space(3);
-        EditorGUILayout.EndVertical();
-    }
-
-    private void CurrentLootGUI(Loot loot)
-    {
-        if (loot == null)
-            return;
-
-        GUILayout.BeginHorizontal();
+            GUILayout.BeginHorizontal();
 
             loot.name = EditorGUILayout.TextField(loot.name);
             loot.additionalInfo = EditorGUILayout.TextField(loot.additionalInfo);
@@ -95,7 +96,8 @@ public class LootTableEditor : Editor
             if (GUILayout.Button("-", EditorStyles.miniButton, GUILayout.Width(controlsWidth)))
                 _lootTable.loots.Remove(loot);
 
-        GUILayout.EndHorizontal();
-    }
+            GUILayout.EndHorizontal();
+        }
 
+    }
 }

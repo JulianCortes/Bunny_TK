@@ -15,23 +15,24 @@ public class GyroController : MonoBehaviour
     private const float lowPassFilterFactor = 0.2f;
 
     private readonly Quaternion baseIdentity = Quaternion.Euler(90, 0, 0);
+#if UNITY_3_5
     private readonly Quaternion landscapeRight = Quaternion.Euler(0, 0, 90);
     private readonly Quaternion landscapeLeft = Quaternion.Euler(0, 0, -90);
     private readonly Quaternion upsideDown = Quaternion.Euler(0, 0, 180);
-
+#endif
     private Quaternion cameraBase = Quaternion.identity;
     private Quaternion calibration = Quaternion.identity;
     private Quaternion baseOrientation = Quaternion.Euler(90, 0, 0);
     private Quaternion baseOrientationRotationFix = Quaternion.identity;
 
     private Quaternion referanceRotation = Quaternion.identity;
-    private bool debug = true;
+    //private bool debug = true;
     private string stringToDebug;
 
 
-    #endregion
+#endregion
 
-    #region [Unity events]
+#region [Unity events]
 
     protected void Start()
     {
@@ -73,9 +74,9 @@ public class GyroController : MonoBehaviour
 
 
 
-    #endregion
+#endregion
 
-    #region [Public methods]
+#region [Public methods]
 
     /// <summary>
     /// Attaches gyro controller to the transform.
@@ -103,9 +104,9 @@ public class GyroController : MonoBehaviour
         DetachGyro();
         AttachGyro();
     }
-    #endregion
+#endregion
 
-    #region [Private methods]
+#region [Private methods]
 
     /// <summary>
     /// Update the gyro calibration.
@@ -215,6 +216,6 @@ public class GyroController : MonoBehaviour
         referanceRotation = Quaternion.Inverse(baseOrientation) * Quaternion.Inverse(calibration);
     }
 
-    #endregion
+#endregion
 }
 
