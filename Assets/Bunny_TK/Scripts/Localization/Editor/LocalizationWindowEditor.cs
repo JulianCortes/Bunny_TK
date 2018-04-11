@@ -14,9 +14,9 @@ namespace Bunny_TK.Localization
         private List<LocalizationEntry> tempEntries;
         private LocalizationDictionary tempDictionary;
 
-        private string newLanguage = "";
-        private string newWordKey = "";
-        private string newWordValue = "";
+        //private string newLanguage = "";
+        //private string newWordKey = "";
+        //private string newWordValue = "";
 
         private Vector2 scrollPos = new Vector2();
 

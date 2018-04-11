@@ -27,11 +27,6 @@ using System.Globalization;
         MethodInfo _onSceneGuiMethod;
         List<MethodInfo> _buttonMethods = new List<MethodInfo>();
 
-        // Vector3 editor
-        bool _hasVector3Fields = false;
-        IEnumerable<FieldInfo> _vector3Fields;
-
-
         public void OnEnable()
         {
             var type = target.GetType();
