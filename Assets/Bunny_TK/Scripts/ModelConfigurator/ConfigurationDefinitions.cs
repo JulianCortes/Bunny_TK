@@ -7,7 +7,8 @@ namespace Bunny_TK.ModelConfigurator
     /// <summary>
     /// Contains: all possible types, all possible values per type, restrictions/validity of a configuration.
     /// </summary>
-    public class ConfigurationDefinitions : MonoBehaviour
+    [CreateAssetMenu(fileName = "ModelConfiguratorDefinitions", menuName = "Utilities/ConfigurationDefinitions ")]
+    public class ConfigurationDefinitions : ScriptableObject
     {
         //This class has a custom inspector to make it easy to use.
         //TODO: Make this ScriptableObject so that is unified across scenes.
@@ -237,7 +238,7 @@ namespace Bunny_TK.ModelConfigurator
                     indexCurrentConfig++;
 
                 //Just to get sure we're not looping..
-                if (changesCount >= GetAllTypes().Count() * restrictions.Count())
+                if (restrictions.Count > 0 && changesCount >= GetAllTypes().Count() * restrictions.Count())
                 {
                     Debug.LogError("Possible restriction loop!");
                     return result;

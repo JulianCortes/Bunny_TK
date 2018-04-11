@@ -11,7 +11,7 @@ namespace Bunny_TK.ModelConfigurator
     public class ConfigurationID : ConfigurationIDBase
     {
         //This class has a custom inspector to make it easy to read and use, but this requires a definition.
-
+        [HideInInspector]
         public ConfigurationDefinitions definition;
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace Bunny_TK.ModelConfigurator
         {
             //Find the first ConfigurationDefinition in scene
             configValues = new List<ConfigValue>();
-            definition = FindObjectOfType<ConfigurationDefinitions>();
+            definition = Resources.LoadAll<ConfigurationDefinitions>("").FirstOrDefault();
         }
 
         /// <summary>
@@ -113,7 +113,6 @@ namespace Bunny_TK.ModelConfigurator
         /// <param name="other"></param>
         public override void Overlap(ConfigurationIDBase other)
         {
-            if (!Similar(other)) return;
             Overlap(other as ConfigurationID);
         }
 
@@ -174,7 +173,18 @@ namespace Bunny_TK.ModelConfigurator
         public override bool Same(ConfigurationIDBase other)
         {
             if (!Similar(other)) return false;
-            return Same(other as ConfigurationID);
+
+            ConfigurationID otherID = other as ConfigurationID;
+            if (configValues.Count != otherID.configValues.Count) return false;
+
+            if (configValues.Exists(v => !otherID.configValues.Exists(v2 => v2.typeIndex != v.typeIndex))) return false;
+
+            if (configValues.Exists(v =>
+                otherID.configValues.Exists(v2 =>
+                v2.typeIndex == v.typeIndex && v2.ValueIndex != v.ValueIndex)))
+                return false;
+
+            return true;
         }
 
         public override IEnumerable<string> GetAllTypes()

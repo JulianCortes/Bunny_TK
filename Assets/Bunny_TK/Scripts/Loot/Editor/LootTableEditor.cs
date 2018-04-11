@@ -14,7 +14,11 @@ public class LootTableEditor : Editor
 
     public override void OnInspectorGUI()
     {
+
         EditorGUI.BeginChangeCheck();
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        GUILayout.Space(3);
+
         EditorGUILayout.PropertyField(serializedObject.FindProperty("tableName"));
         if (EditorGUI.EndChangeCheck())
         {
@@ -24,6 +28,8 @@ public class LootTableEditor : Editor
 
         if (tableIsLoaded)
         {
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+
             GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
                     EditorGUILayout.TextField("Name", EditorStyles.boldLabel);
@@ -40,8 +46,10 @@ public class LootTableEditor : Editor
                 _lootTable.UpdatePercentages();
             }
             GUILayout.EndVertical();
-        }
+            EditorGUILayout.EndVertical();
 
+        }
+        GUILayout.Space(3);
         if (GUILayout.Button("Add"))
         {
             if (_lootTable.loots == null)
@@ -53,6 +61,8 @@ public class LootTableEditor : Editor
             _lootTable.loots = new List<Loot>();
 
         Undo.RecordObject(target, "");
+        GUILayout.Space(3);
+        EditorGUILayout.EndVertical();
     }
 
     private void CurrentLootGUI(Loot loot)
