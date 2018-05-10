@@ -44,7 +44,7 @@ public class BezierSplineInspector : Editor
             EditorUtility.SetDirty(spline);
         }
 
-        if(GUILayout.Button("Remove Last Curve"))
+        if (GUILayout.Button("Remove Last Curve"))
         {
             Undo.RecordObject(spline, "Remove Last Curve");
             spline.RemoveLastCurve();
@@ -119,9 +119,7 @@ public class BezierSplineInspector : Editor
             size *= 2f;
         }
         Handles.color = modeColors[(int)spline.GetControlPointMode(index)];
-#pragma warning disable CS0618 // Il tipo o il membro è obsoleto
-        if (Handles.Button(point, handleRotation, size * handleSize, size * pickSize, Handles.DotCap))
-#pragma warning restore CS0618 // Il tipo o il membro è obsoleto
+        if (Handles.Button(point, handleRotation, size * handleSize, size * pickSize, Handles.DotHandleCap))
         {
             selectedIndex = index;
             Repaint();

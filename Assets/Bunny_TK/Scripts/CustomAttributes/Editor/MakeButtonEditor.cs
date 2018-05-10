@@ -46,7 +46,6 @@ using System.Globalization;
 
         }
 
-
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
@@ -57,7 +56,6 @@ using System.Globalization;
                     _onInspectorGuiMethod.Invoke(target, new object[0]);
             }
 
-
             foreach (var meth in _buttonMethods)
             {
                 if (GUILayout.Button(CultureInfo.InvariantCulture.TextInfo.ToTitleCase(Regex.Replace(meth.Name, "(\\B[A-Z])", " $1"))))
@@ -66,7 +64,6 @@ using System.Globalization;
             }
         }
 
-
         protected virtual void OnSceneGUI()
         {
             if (_onSceneGuiMethod != null)
@@ -74,7 +71,6 @@ using System.Globalization;
 
 
         }
-
 
     }
 #endif

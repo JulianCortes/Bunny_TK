@@ -10,7 +10,6 @@ namespace Bunny_TK.Loot
         public GameObject gameObject;
 
         public float weight;
-        public float percentage; //Remove this
 
         public override string ToString()
         {
@@ -29,6 +28,11 @@ namespace Bunny_TK.Loot
             float val = 0f;
             float.TryParse(additionalInfo, out val);
             return val;
+        }
+
+        public float GetPercentage(LootTableScriptableObject lootTable)
+        {
+            return lootTable.GetPercentage(this);
         }
     }
 }

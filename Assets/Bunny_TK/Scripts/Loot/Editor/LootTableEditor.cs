@@ -25,7 +25,7 @@ namespace Bunny_TK.Loot
             {
                 serializedObject.ApplyModifiedProperties();
             }
-            tableIsLoaded = _lootTable.loots != null && _lootTable.loots.Count > 0;
+            tableIsLoaded =  _lootTable.Count > 0;
 
             if (tableIsLoaded)
             {
@@ -41,10 +41,9 @@ namespace Bunny_TK.Loot
                 EditorGUILayout.TextField("", EditorStyles.boldLabel, GUILayout.Width(controlsWidth));
                 GUILayout.EndHorizontal();
 
-                for (int i = 0; i < _lootTable.loots.Count; i++)
+                for (int i = 0; i < _lootTable.Count; i++)
                 {
-                    CurrentLootGUI(_lootTable.loots[i]);
-                    _lootTable.UpdatePercentages();
+                    CurrentLootGUI(_lootTable[i]);
                 }
                 GUILayout.EndVertical();
                 EditorGUILayout.EndVertical();
@@ -52,14 +51,10 @@ namespace Bunny_TK.Loot
             }
             GUILayout.Space(3);
             if (GUILayout.Button("Add"))
-            {
-                if (_lootTable.loots == null)
-                    _lootTable.loots = new List<Loot>();
-                _lootTable.loots.Add(new Loot());
-            }
+                _lootTable.Add(new Loot());
 
             if (GUILayout.Button("Clear"))
-                _lootTable.loots = new List<Loot>();
+                _lootTable.Clear() ;
 
             Undo.RecordObject(target, "");
             GUILayout.Space(3);
@@ -81,11 +76,10 @@ namespace Bunny_TK.Loot
             Rect rect = GUILayoutUtility.GetLastRect();
             rect.x += rect.width + 4f;
             rect.width = percentWidth;
-            float val = loot.percentage / 100f;
-
+            float val = _lootTable.GetPercentage(loot);
             if (!float.IsNaN(val))
             {
-                EditorGUI.ProgressBar(rect, val, "" + loot.percentage);
+                EditorGUI.ProgressBar(rect, val, "" + val*100f);
                 EditorGUILayout.LabelField("", EditorStyles.label, GUILayout.Width(percentWidth));    //Workaround Layout
             }
             else
@@ -94,7 +88,7 @@ namespace Bunny_TK.Loot
             }
 
             if (GUILayout.Button("-", EditorStyles.miniButton, GUILayout.Width(controlsWidth)))
-                _lootTable.loots.Remove(loot);
+                _lootTable.Remove(loot);
 
             GUILayout.EndHorizontal();
         }

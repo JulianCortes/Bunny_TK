@@ -10,37 +10,21 @@ namespace Bunny_TK.Loot
     public class LootTableScriptableObject : ScriptableObject
     {
         //TODO:
-        // - Add multipliers
-        // - Add wrappers for common collection functionalities
-        //      - Make loots private
-        //      - Add Add/Remove
-        //      - Add Count
-        // -
+        // - multipliers
 
         public string tableName;
-        public List<Loot> loots;
 
-        public Loot this[int index]
+        public float TotalWeight
         {
             get
             {
-                return loots[index];
-            }
-
-            set
-            {
-                loots[index] = value;
-            }
-        }
-        public int Count
-        {
-            get
-            {
-                return loots.Count;
+                float w = 0f;
+                _loots.ForEach(l => w += l.weight);
+                return w;
             }
         }
 
-        private float totalWeight;
+        private List<Loot> _loots;
 
         public static int GetRandomWeightedIndex(float[] weights)
         {
@@ -79,55 +63,28 @@ namespace Bunny_TK.Loot
 
         public Loot GetRandomWeighted()
         {
-            int index = GetRandomWeightedIndex(loots.Select(l => l.weight).ToArray());
+            int index = GetRandomWeightedIndex(_loots.Select(l => l.weight).ToArray());
             if (index < 0) return null;
-            return loots[index];
-        }
-
-        public void UpdatePercentages()
-        {
-            UpdatePercentages(loots);
-        }
-
-        private void UpdatePercentages(List<Loot> loots)
-        {
-            float totalWeight = 0f;
-            loots.ForEach(l => totalWeight += l.weight);
-            loots.ForEach(l => l.percentage = (l.weight / totalWeight) * 100f);
-        }
-
-        //List funcs wrapper
-
-        public void Add(Loot item)
-        {
-            loots.Add(item);
-            loots.ForEach(l => totalWeight += l.weight);
-        }
-
-        public bool Remove(Loot item)
-        {
-            bool res = loots.Remove(item);
-            loots.ForEach(l => totalWeight += l.weight);
-            return res;
+            return _loots[index];
         }
 
         public float GetPercentage(Loot item)
         {
             if (item == null) return 0f;
-            if (loots.Count == 0 && item.weight > 0) return 1f;
+            if (_loots.Count == 0 && item.weight > 0) return 1f;
 
             float val = 0f;
 
-            if (loots.Contains(item))
+            if (_loots.Contains(item))
             {
-                val = item.weight / totalWeight;
+                val = item.weight / TotalWeight;
             }
             else
             {
                 float tempWeight = item.weight;
-                loots.ForEach(l => tempWeight += l.weight);
+                _loots.ForEach(l => tempWeight += l.weight);
 
-                val = item.weight / totalWeight;
+                val = item.weight / TotalWeight;
             }
 
             if (float.IsNaN(val))
@@ -136,8 +93,58 @@ namespace Bunny_TK.Loot
             return val;
         }
 
+        //List funcs wrapper
+        public Loot this[int index]
+        {
+            get
+            {
+                return _loots[index];
+            }
 
+            set
+            {
+                _loots[index] = value;
+            }
+        }
+
+        public int Count
+        {
+            get
+            {
+                if (_loots == null) return 0;
+                return _loots.Count;
+            }
+        }
+
+        public void Add(Loot item)
+        {
+            _loots.Add(item);
+        }
+
+        public bool Remove(Loot item)
+        {
+            bool res = _loots.Remove(item);
+            return res;
+        }
+
+        public bool Contains(Loot item)
+        {
+            return _loots.Contains(item);
+        }
+
+        public void Clear()
+        {
+            _loots = new List<Loot>();
+        }
+
+        public List<Loot> GetLoots()
+        {
+            return this;
+        }
+
+        public static implicit operator List<Loot>(LootTableScriptableObject lootTable)
+        {
+            return new List<Loot>(lootTable._loots);
+        }
     }
-
-
 }

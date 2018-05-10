@@ -1,30 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Bunny_TK.Loot
 {
     public class LootDrop : MonoBehaviour
     {
+        /// <summary>
+        /// Set loots at start
+        /// </summary>
         public bool isLootsSetAtStart = false;
+        /// <summary>
+        /// if true, the amount is drawn from lootTableAmount
+        /// </summary>
         public bool isAmountRandom = false;
+        /// <summary>
+        /// How many loot, if isAmountRandom = true it is initialized on DropLoot
+        /// </summary>
         public int lootAmount = 1;
 
         [SerializeField]
         private List<Loot> loots;
 
-        [HideInInspector]
         [SerializeField]
         private LootTableScriptableObject lootTableItem;
 
-        [HideInInspector]
         [SerializeField]
         private LootTableScriptableObject lootTableAmount;
 
         public void Start()
         {
             if (isLootsSetAtStart)
-                SetRandomLoot();
+                InitLoots();
         }
 
         public List<Loot> DropLoot()
@@ -40,28 +46,32 @@ namespace Bunny_TK.Loot
             this.loots = new List<Loot>(loots);
             return loots;
         }
+
         public void SetLootTableItem(LootTableScriptableObject newLootTable, bool updateCurrentLoot)
         {
             lootTableItem = newLootTable;
             if (updateCurrentLoot)
-                SetRandomLoot();
+                InitLoots();
         }
+
         public void SetLootTableItem(LootTableScriptableObject newLootTable)
         {
             SetLootTableItem(newLootTable, false);
         }
+
         public void SetLootTableAmount(LootTableScriptableObject newLootTable, bool updateCurrentLoot)
         {
             lootTableAmount = newLootTable;
             if (updateCurrentLoot)
-                SetRandomLoot();
+                InitLoots();
         }
+
         public void SetLootTableAmount(LootTableScriptableObject newLootTable)
         {
             SetLootTableAmount(newLootTable, false);
         }
 
-        public void SetRandomLoot()
+        public void InitLoots()
         {
             loots = DropLoot();
         }

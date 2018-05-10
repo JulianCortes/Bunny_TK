@@ -43,7 +43,7 @@ namespace Bunny_TK.Loot
             //Set random
             GUILayout.Space(3);
             if (GUILayout.Button("Set Random Loot"))
-                _Target.SetRandomLoot();
+                _Target.InitLoots();
             GUILayout.Space(3);
 
             //Current Loot
