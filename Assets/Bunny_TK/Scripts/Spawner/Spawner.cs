@@ -1,6 +1,5 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Bunny_TK.Spawners
@@ -24,18 +23,22 @@ namespace Bunny_TK.Spawners
         [SerializeField]
         protected int totalSpawned;
 
+        public event Action<GameObject> OnSpawn;
+
+        public GameObject LastSpawn { get { return spawns[spawns.Count - 1]; } }
         public float TimeSinceLast { get { return timeSinceLast; } }
         public float TotalSpawned { get { return totalSpawned; } }
+        public int CurrentSpawnCount { get { return spawns.Count; } }
+        public List<GameObject> Spawns { get { return new List<GameObject>(spawns); } }
 
-        private void Start()
+        protected void Start()
         {
             if (spawnAtStart)
                 Spawn();
         }
-        private void Update()
+        protected void Update()
         {
             if (!isActive) return;
-            if (spawns == null || spawns.Count <= 0) return;
             if (frequency < 0) return;
             if (maxSpawnCount >= 1 && spawns.Count >= maxSpawnCount) return;
             if (targetTotalSpawnCount >= 1 && totalSpawned >= targetTotalSpawnCount) return;
@@ -45,8 +48,8 @@ namespace Bunny_TK.Spawners
                 Spawn();
         }
 
-        protected abstract Vector3 GetPosition();
-        protected abstract GameObject GetGameObject();
+        public abstract Vector3 GetPosition();
+        public abstract GameObject GetGameObject();
 
         public virtual int Clean()
         {
@@ -61,10 +64,16 @@ namespace Bunny_TK.Spawners
         }
         public virtual bool DestroySpawn(GameObject target)
         {
+            if (!RemoveSpawn(target)) return false;
+            Destroy(target);
+            return true;
+        }
+        public virtual bool RemoveSpawn(GameObject target)
+        {
+            if (target == null) return false;
             if (!spawns.Contains(target)) return false;
 
             spawns.Remove(target);
-            Destroy(target);
             return true;
         }
         public virtual void SetActiveSpawns(bool isActive)
@@ -72,7 +81,9 @@ namespace Bunny_TK.Spawners
             foreach (var spawn in spawns)
                 if (spawn != null)
                     spawn.SetActive(isActive);
+
         }
+
         public GameObject Spawn()
         {
             return Spawn(GetGameObject());
@@ -85,8 +96,9 @@ namespace Bunny_TK.Spawners
         {
             return Spawn(gameObject, GetPosition(), rotation);
         }
-        protected GameObject Spawn(GameObject gameObject, Vector3 position, Quaternion rotation)
+        protected virtual GameObject Spawn(GameObject gameObject, Vector3 position, Quaternion rotation)
         {
+            if (gameObject == null) return null;
             GameObject spawn = Instantiate(gameObject);
             spawn.transform.position = position;
             spawn.transform.rotation = rotation;
@@ -95,6 +107,8 @@ namespace Bunny_TK.Spawners
             timeSinceLast = 0f;
             spawns.Add(spawn);
             totalSpawned++;
+            if (OnSpawn != null)
+                OnSpawn(spawn);
             return spawn;
         }
     }

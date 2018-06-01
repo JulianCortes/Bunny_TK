@@ -9,37 +9,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba8289df58909414d9a171e0e531c0f3, type: 3}
-  m_Name: LootTableSample
+  m_Name: LootTableItemSample
   m_EditorClassIdentifier: 
   tableName: 123
-  loots:
-  - name: None
-    additionalInfo: 
-    gameObject: {fileID: 0}
-    weight: 10.5
-    percentage: 50
-  - name: Common
-    additionalInfo: 
-    gameObject: {fileID: 0}
-    weight: 4
-    percentage: 19.047619
-  - name: Uncommon
-    additionalInfo: 
-    gameObject: {fileID: 0}
-    weight: 3
-    percentage: 14.285714
-  - name: Rare
-    additionalInfo: 
-    gameObject: {fileID: 0}
-    weight: 2
-    percentage: 9.523809
-  - name: Legendary
-    additionalInfo: 
-    gameObject: {fileID: 0}
-    weight: 1
-    percentage: 4.7619047
-  - name: Unique
-    additionalInfo: 
-    gameObject: {fileID: 0}
-    weight: 0.5
-    percentage: 2.3809524

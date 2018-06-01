@@ -29,8 +29,13 @@ namespace Bunny_TK.Utils
         public Collider Collider { get { return _collider; } }
         public List<Collider> CurrentStayingCollider
         {
-            get { return new List<Collider>(currentStayingColliders); }
+            get
+            {
+                RemoveMissingColliders();
+                return new List<Collider>(currentStayingColliders);
+            }
         }
+
         void Start()
         {
 
@@ -117,6 +122,11 @@ namespace Bunny_TK.Utils
                 if (sendExitTriggerEvent)
                     OnTExit(c);
             }
+        }
+
+        public void RemoveMissingColliders()
+        {
+            currentStayingColliders.RemoveAll(c => c == null);
         }
         #endregion Utility
     }

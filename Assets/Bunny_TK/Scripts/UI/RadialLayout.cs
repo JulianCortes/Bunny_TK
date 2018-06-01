@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace Bunny_TK.Utils
 {
     public class RadialLayout : LayoutGroup
-    { 
+    {
         public float fDistance;
         [Range(0f, 360f)]
         public float MinAngle, MaxAngle, StartAngle;

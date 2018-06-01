@@ -40,6 +40,8 @@ namespace Bunny_TK.Spawners
         }
         private void OnSceneGUI()
         {
+            if (spawner.positions == null)
+                spawner.positions = new List<Vector3>();
             for (int i = 0; i < spawner.positions.Count; i++)
                 ShowPoint(i);
         }

@@ -27,6 +27,11 @@ using System.Globalization;
         MethodInfo _onSceneGuiMethod;
         List<MethodInfo> _buttonMethods = new List<MethodInfo>();
 
+        // Vector3 editor
+        bool _hasVector3Fields = false;
+        IEnumerable<FieldInfo> _vector3Fields;
+
+
         public void OnEnable()
         {
             var type = target.GetType();
@@ -46,6 +51,7 @@ using System.Globalization;
 
         }
 
+
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
@@ -56,6 +62,7 @@ using System.Globalization;
                     _onInspectorGuiMethod.Invoke(target, new object[0]);
             }
 
+
             foreach (var meth in _buttonMethods)
             {
                 if (GUILayout.Button(CultureInfo.InvariantCulture.TextInfo.ToTitleCase(Regex.Replace(meth.Name, "(\\B[A-Z])", " $1"))))
@@ -64,6 +71,7 @@ using System.Globalization;
             }
         }
 
+
         protected virtual void OnSceneGUI()
         {
             if (_onSceneGuiMethod != null)
@@ -71,6 +79,7 @@ using System.Globalization;
 
 
         }
+
 
     }
 #endif

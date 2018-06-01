@@ -4,7 +4,7 @@ namespace Bunny_TK.Utils
 {
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
-        private static T instance;
+        protected static T instance;
 
         public static T Instance
         {
@@ -27,8 +27,7 @@ namespace Bunny_TK.Utils
                     instance = (T)FindObjectOfType(typeof(T));
                     if (instance == null)
                     {
-                        Debug.LogError("An instance of " + typeof(T) +
-                        " is needed in the scene or in resources, but there is none.");
+          
                     }
                 }
                 return instance;
@@ -39,18 +38,7 @@ namespace Bunny_TK.Utils
         {
             get
             {
-                return instance != null;
-            }
-        }
-        private void Awake()
-        {
-            if (instance == null)
-                instance = this as T;
-
-            if (instance != this as T)
-            {
-                Debug.LogError("Found another instance. Destroying this " + name + "!", this);
-                Destroy(this.gameObject);
+                return Instance != null;
             }
         }
     }

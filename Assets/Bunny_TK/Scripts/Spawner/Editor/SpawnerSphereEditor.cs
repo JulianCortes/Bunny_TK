@@ -11,9 +11,22 @@ namespace Bunny_TK.Spawners
     {
         void OnSceneGUI()
         {
-            Handles.color = Color.red;
             SpawnerInSphere spawner = (SpawnerInSphere)target;
-            spawner.radius = Handles.RadiusHandle(Quaternion.identity, spawner.transform.position, spawner.radius);
+
+
+            if (!spawner.useMinMaxRadius)
+            {
+                Handles.color = Color.red;
+                spawner.radius = Handles.RadiusHandle(Quaternion.identity, spawner.transform.position, spawner.radius);
+            }
+            else
+            {
+                Handles.color = Color.red;
+                spawner.rangeRadius.min = Handles.RadiusHandle(Quaternion.identity, spawner.transform.position, spawner.rangeRadius.min);
+
+                Handles.color = Color.blue;
+                spawner.rangeRadius.max = Handles.RadiusHandle(Quaternion.identity, spawner.transform.position, spawner.rangeRadius.max);
+            }
         }
 
         public override void OnInspectorGUI()
