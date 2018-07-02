@@ -13,7 +13,7 @@ namespace Bunny_TK.Spawners
         [Range(0f, 360f)]
         public float angle = 360f;
         public RangeFloat radius = new RangeFloat(0f, 1f);
-        public bool centered = false;
+        public const bool centered = true;
         
 
         public float MinAngle

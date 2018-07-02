@@ -289,7 +289,7 @@ namespace Bunny_TK.Net
                         {
                             case CommandType.Party:
                                 {
-                                    //PartyCommand partyCommand = (PartyCommand)o;
+                                    PartyCommand partyCommand = (PartyCommand)o;
                                     commandsReceived++;
                                     _status = Status.Partying;
                                     break;

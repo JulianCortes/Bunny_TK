@@ -8,10 +8,13 @@ public class GameObjectLayout : MonoBehaviour
 {
     public float distance = .01f;
     public GameObject prefab;
+    public bool centered = true;
     public bool align = true;
+    public Vector3 offset;
     private List<Transform> items;
     private float xStart;
     private bool pause = false;
+
     private void Start()
     {
         if (pause) return;
@@ -22,7 +25,6 @@ public class GameObjectLayout : MonoBehaviour
         align = false;
 
     }
-
     private void Update()
     {
         if (!align) return;
@@ -31,8 +33,15 @@ public class GameObjectLayout : MonoBehaviour
             items = GetComponentsInChildren<Transform>(true).ToList();
             items.Remove(this.transform);
             items.RemoveAll(t => t.parent != this.transform);
-            xStart = -distance * (items.Count - 2) / 2;
-            xStart -= distance / 2f;
+            if (centered)
+            {
+                xStart = -distance * (items.Count - 2) / 2;
+                xStart -= distance / 2f;
+            }
+            else
+            {
+                xStart = 0f;
+            }
 
             for (int i = 0; i < items.Count; i++)
             {
@@ -40,7 +49,7 @@ public class GameObjectLayout : MonoBehaviour
                 targetPos.x = xStart;
                 xStart += distance;
 
-                items[i].localPosition = targetPos;
+                items[i].localPosition = targetPos+offset;
             }
         }
     }

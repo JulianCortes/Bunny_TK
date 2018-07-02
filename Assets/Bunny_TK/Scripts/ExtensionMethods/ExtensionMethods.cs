@@ -25,6 +25,28 @@ namespace Bunny_TK
             return new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
         }
 
+        public static bool IsNull(this Vector3 vector)
+        {
+            if (vector.x <= -9999f) return true;
+            if (vector.y <= -9999f) return true;
+            if (vector.z <= -9999f) return true;
+            return false;
+        }
+        public static void SetNull(this Vector3 vector)
+        {
+            vector.x = -9999f;
+            vector.y = -9999f;
+            vector.z = -9999f;
+        }
+        public static Vector3 NullVector3()
+        {
+            var vector = Vector3.zero;
+            vector.x = -9999f;
+            vector.y = -9999f;
+            vector.z = -9999f;
+            return vector;
+        }
+
 
         public static float ClampAngle(float angle, float from, float to)
         {
@@ -52,6 +74,16 @@ namespace Bunny_TK
         {
             var head = to - from;
             return head / head.magnitude;
+        }
+
+        public static void CopyValues(this Transform transform, Transform original, bool position = true, bool rotation = true, bool scale = false)
+        {
+            if (position)
+                transform.position = original.position;
+            if (rotation)
+                transform.rotation = original.rotation;
+            if (scale)
+                transform.localScale = original.localScale;
         }
     }
 }

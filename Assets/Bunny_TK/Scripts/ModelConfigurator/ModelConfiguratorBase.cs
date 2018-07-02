@@ -6,7 +6,8 @@ using System;
 
 namespace Bunny_TK.ModelConfigurator
 {
-    public class ModelConfiguratorBase<T> : MonoBehaviour
+    [RequireComponent(typeof(ConfigurationIDBase))]
+    public class  ModelConfiguratorBase<T> : MonoBehaviour
                                    where T : ConfigurationIDBase
     {
         //This component manages all possible configurations appliable to the model.
@@ -14,7 +15,6 @@ namespace Bunny_TK.ModelConfigurator
         /// <summary>
         /// CurrentConfiguration will contain the results of ApplyConfiguration.
         /// </summary>
-        [HideInInspector]
         public T currentConfiguration;
         /// <summary>
         /// References of all configurations.
@@ -28,16 +28,10 @@ namespace Bunny_TK.ModelConfigurator
 
         private void Start()
         {
-            currentConfiguration = GetComponent<T>();
-            configurations.RemoveAll(c => c == null);
-            configurations = new HashSet<Configuration>(configurations).ToList();
             ApplyConfiguration();
         }
         private void Reset()
         {
-            if (GetComponent<ConfigurationIDBase>() == null)
-                gameObject.AddComponent<T>();
-
             currentConfiguration = GetComponent<ConfigurationIDBase>() as T;
         }
 
@@ -48,10 +42,8 @@ namespace Bunny_TK.ModelConfigurator
         /// <param name="targetConfiguration"></param>
         public virtual void ApplyConfiguration(T targetConfiguration)
         {
-            configurations.ForEach(c => c.Remove());
-
             currentConfiguration.Overlap(targetConfiguration);
-            configurations.Where(configuration => configuration.Id.Similar(currentConfiguration)).ToList()
+            configurations.Where(configuration => configuration.Id.Similar(targetConfiguration)).ToList()
                           .ForEach(similar => similar.ApplyConfiguration());
 
             if (OnAppliedConfiguration != null)

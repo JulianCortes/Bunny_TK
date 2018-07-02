@@ -12,43 +12,8 @@ namespace Bunny_TK.ModelConfigurator
         public List<MaterialManager> materialGroups;
 
         private ConfigurationIDBase _id;
-        public ConfigurationIDBase Id
-        {
-            get
-            {
-                if (_id == null)
-                    _id = GetComponent<ConfigurationIDBase>();
-                return _id;
-            }
-        }
+        public ConfigurationIDBase Id { get { return _id; } }
 
-        public enum Status
-        {
-            None,
-            Applied,
-            Removed
-        }
-        [SerializeField]
-        private Status _lastStatus = Status.None;
-
-        public Status LastStatus
-        {
-            get
-            {
-                return _lastStatus;
-            }
-
-            set
-            {
-                _lastStatus = value;
-            }
-        }
-
-        private void Start()
-        {
-            _id = GetComponent<ConfigurationIDBase>();
-            _lastStatus = Status.None;
-        }
 
         void Reset()
         {
@@ -57,25 +22,16 @@ namespace Bunny_TK.ModelConfigurator
 
         public void ApplyConfiguration()
         {
-            if (gameObjectGroups != null)
-                foreach (var g in gameObjectGroups)
-                    if (g != null)
-                        g.IsActive = true;
+            foreach (var g in gameObjectGroups)
+                g.IsActive = true;
 
-            if (materialGroups != null)
-                foreach (var m in materialGroups)
-                    if (m != null)
-                        m.ApplyMaterial();
-            _lastStatus = Status.Applied;
+            foreach (var m in materialGroups)
+                m.ApplyMaterial();
         }
 
         public void Remove()
         {
-            if (materialGroups != null)
-                foreach (var g in gameObjectGroups)
-                    if (g != null)
-                        g.IsActive = false;
-            _lastStatus = Status.Removed;
+
         }
     }
 }

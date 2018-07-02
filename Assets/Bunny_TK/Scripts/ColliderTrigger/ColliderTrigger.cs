@@ -26,7 +26,8 @@ namespace Bunny_TK.Utils
             TriggerStay,
             TriggerExit;
 
-        public Collider Collider { get { return _collider; } }
+        public Collider Collider { get
+            { return _collider = GetComponent<Collider>(); } }
         public List<Collider> CurrentStayingCollider
         {
             get

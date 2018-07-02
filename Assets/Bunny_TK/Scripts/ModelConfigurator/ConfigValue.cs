@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Bunny_TK.ModelConfigurator
+﻿namespace Bunny_TK.ModelConfigurator
 {
     [System.Serializable]
     public class ConfigValue
@@ -21,11 +19,9 @@ namespace Bunny_TK.ModelConfigurator
             }
         }
 
-
         /// <summary>
         /// Used in custom editor where index is shifted +1 and added undefined value at 0.
         /// </summary>
-        [HideInInspector]
         public int valueIndexForEditor;
 
         public ConfigValue Overlap(ConfigValue overlapper, bool forceType = false)
