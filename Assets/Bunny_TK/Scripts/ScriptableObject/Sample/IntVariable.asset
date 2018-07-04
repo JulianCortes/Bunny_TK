@@ -11,5 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba019866729f4274d9364dcadba22218, type: 3}
   m_Name: IntVariable
   m_EditorClassIdentifier: 
-  initialValue: 0
-  runtimeValue: 0
+  initialValue: 12
+  runtimeValue: 12

@@ -8,7 +8,7 @@ namespace Bunny_TK.DataDriven.CustomInspector
     //  - Due to Unity serialization, drawers for Generics doesn't work, so children of BaseVariable class must be added manually here.
     //  - Due to the default drawer for Vector3 when the window is too narrow, Vector3Variable has it's own custom drawer.
 
-    [CustomPropertyDrawer(typeof(BaseVariable<>), true)]
+    [CustomPropertyDrawer(typeof(BaseVariableGeneric<>), true)]
     [CustomPropertyDrawer(typeof(IntVariable), true)]
     [CustomPropertyDrawer(typeof(FloatVariable), true)]
     [CustomPropertyDrawer(typeof(StringVariable), true)]
@@ -47,7 +47,9 @@ namespace Bunny_TK.DataDriven.CustomInspector
             contentPosition.y += EditorHelper.SingleLineHeightWithSpacing;
 
             //Runtime Value Prop
+            EditorGUI.BeginDisabledGroup(!Application.isPlaying);
             EditorHelper.ScriptablePropertyField(contentPosition, "Runtime Value", property, "runtimeValue");
+            EditorGUI.EndDisabledGroup();
 
             property.serializedObject.Update();
             EditorGUI.indentLevel = 0;

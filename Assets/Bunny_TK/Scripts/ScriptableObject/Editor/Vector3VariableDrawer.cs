@@ -31,7 +31,7 @@ namespace Bunny_TK.DataDriven.CustomInspector
             contentPosition.height = EditorGUIUtility.singleLineHeight;
             contentPosition.y += EditorHelper.SingleLineHeightWithSpacing;
 
-            EditorGUI.indentLevel += 1;
+            EditorGUI.indentLevel++;
             EditorGUIUtility.labelWidth = 0f;
 
             //Initial Value Prop
@@ -45,7 +45,9 @@ namespace Bunny_TK.DataDriven.CustomInspector
                 contentPosition.y += EditorHelper.SingleLineHeightWithSpacing;
 
             //Runtime Value Prop
+            EditorGUI.BeginDisabledGroup(!Application.isPlaying);
             EditorHelper.ScriptablePropertyField(contentPosition, "Runtime Value", property, "runtimeValue");
+            EditorGUI.EndDisabledGroup();
 
             property.serializedObject.Update();
             EditorGUI.indentLevel = 0;

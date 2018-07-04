@@ -9,7 +9,7 @@ namespace Bunny_TK.DataDriven
     [RequireComponent(typeof(Text))]
     public class TextUISync : MonoBehaviour
     {
-        public BaseVariable<object> stringVariable;
+        public BaseVariable baseVariable;
 
         private Text textUI;
 
@@ -20,9 +20,8 @@ namespace Bunny_TK.DataDriven
         private void Update()
         {
             if (textUI == null) return;
-            if (stringVariable == null) return;
-
-            //textUI.text = stringVariable.runtimeValue;
+            if (baseVariable == null) return;
+            textUI.text = baseVariable.GetStringRuntimeValue();
         }
     }
 }
