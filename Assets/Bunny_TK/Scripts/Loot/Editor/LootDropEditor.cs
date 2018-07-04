@@ -52,7 +52,7 @@ namespace Bunny_TK.Loot
             this.serializedObject.ApplyModifiedProperties();
         }
 
-        private void ShowEnumResources<T>(SerializedObject target, string propertyName, string label, string resourcePath, Action<T> assignFunction) where T : UnityEngine.Object
+        private void ShowEnumResources<T>(SerializedObject target, string propertyName, string label, string resourcePath, Action<T> onAssignFunction) where T : UnityEngine.Object
         {
             int indexReference = 0;
             List<T> references = Resources.LoadAll<T>("").ToList();
@@ -76,8 +76,8 @@ namespace Bunny_TK.Loot
             EditorGUILayout.BeginHorizontal();
             indexReference = EditorGUILayout.Popup(label, indexReference, names.ToArray());
 
-            if (indexReference <= 0) assignFunction(null);
-            else assignFunction(references[indexReference - 1]);
+            if (indexReference <= 0) onAssignFunction(null);
+            else onAssignFunction(references[indexReference - 1]);
 
             EditorGUI.BeginDisabledGroup(property.objectReferenceValue == null);
             if (GUILayout.Button("Show", EditorStyles.miniButton, GUILayout.Width(50)))

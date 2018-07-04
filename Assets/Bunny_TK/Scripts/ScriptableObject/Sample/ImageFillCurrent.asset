@@ -11,4 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6719887bac6926d4bb66283dd4406e61, type: 3}
   m_Name: ImageFillCurrent
   m_EditorClassIdentifier: 
-  initialValue: 0
+  initialValue: 0.19
+  runtimeValue: 1.17

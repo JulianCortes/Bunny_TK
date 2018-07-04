@@ -2,54 +2,47 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Bunny_TK.EditorUtils;
 
 namespace Bunny_TK.DataDriven.CustomInspector
 {
     [CustomPropertyDrawer(typeof(FloatVariable))]
     public class FloatVariableDrawer : PropertyDrawer
     {
-
-        private static float height = 16f;
-        private static float additionalHeight = 18f;
-        private static float labelWidth = 30f;
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return Screen.width < 333 ? (height + additionalHeight + additionalHeight) : height + additionalHeight;
+            if (property.objectReferenceValue == null)
+                return EditorGUIUtility.singleLineHeight;
+            return EditorGUIUtility.singleLineHeight + (EditorHelper.SingleLineHeightWithSpacing * 2);
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             label = EditorGUI.BeginProperty(position, label, property);
-            Rect contentPosition = EditorGUI.PrefixLabel(position, label);
+            Rect contentPosition = position;
+            contentPosition.height = EditorGUIUtility.singleLineHeight;
 
-            //if (position.height > height)
-            //{
-            //    position.height = height;
-            //    EditorGUI.indentLevel += 1;
-            //    contentPosition = EditorGUI.IndentedRect(position);
-            //    contentPosition.y += additionalHeight;
-            //}
-
-            contentPosition.width *= .5f;
-            contentPosition.height = height;
-            EditorGUI.indentLevel = 0;
-            EditorGUIUtility.labelWidth = labelWidth;
-
-            EditorGUI.PropertyField(contentPosition, property.FindPropertyRelative<FloatVariable>("initialValue"), new GUIContent("Init"));
-
-            contentPosition.x += contentPosition.width;
-            EditorGUIUtility.labelWidth = labelWidth;
-            EditorGUI.PropertyField(contentPosition, property.FindPropertyRelative<FloatVariable>("runtimeValue"), new GUIContent("Run"));
-
-            contentPosition = EditorGUI.IndentedRect(position);
-            contentPosition.y += additionalHeight;
-            contentPosition.height = height;
+            //'Default'
             EditorGUIUtility.labelWidth = 0f;
+            EditorHelper.DefaultField(contentPosition, property);
+
+            //Moving down and resetting labelWidth
+            contentPosition.height = EditorGUIUtility.singleLineHeight;
+            contentPosition.y += EditorHelper.SingleLineHeightWithSpacing;
             EditorGUI.indentLevel += 1;
+            EditorGUIUtility.labelWidth = 0f;
 
-            EditorGUI.PropertyField(contentPosition, property, new GUIContent("Reference"));
+            //Initial Value Prop
+            EditorHelper.ScriptablePropertyField(contentPosition, "Initial Value", property, "initialValue");
+
+            //Moving down
+            contentPosition.y += EditorHelper.SingleLineHeightWithSpacing;
+
+            //Runtime Value Prop
+            EditorHelper.ScriptablePropertyField(contentPosition, "Runtime Value", property, "runtimeValue");
+
+            property.serializedObject.Update();
             EditorGUI.indentLevel = 0;
-
             EditorGUI.EndProperty();
         }
     }

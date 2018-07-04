@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 namespace Bunny_TK.DataDriven
 {
-
     [RequireComponent(typeof(Button))]
     [RequireComponent(typeof(AudioSource))]
     public class ButtonAudio : MonoBehaviour

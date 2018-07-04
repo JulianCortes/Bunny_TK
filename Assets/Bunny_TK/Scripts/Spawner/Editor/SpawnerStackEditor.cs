@@ -12,7 +12,6 @@ namespace Bunny_TK.Spawners
 
         private SpawnerInStack spawner { get { return target as SpawnerInStack; } }
         private static Vector3 labelOffset = new Vector3(.1f, .1f, .1f);
-        private int selectedIndex = -1;
         public const float handleSize = .3f;
         public const float pickSize = .3f;
 

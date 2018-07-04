@@ -87,11 +87,6 @@ namespace Bunny_TK
                 transform.localScale = original.localScale;
         }
 
-        public static SerializedProperty FindPropertyRelative<T>(this SerializedProperty serialized, string propertyPath) where T: ScriptableObject
-        {
-            SerializedObject so = new SerializedObject(serialized.objectReferenceValue as T);
-            SerializedProperty prop = so.FindProperty(propertyPath);
-            return prop;
-        }
+
     }
 }

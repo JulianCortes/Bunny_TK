@@ -9,6 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6719887bac6926d4bb66283dd4406e61, type: 3}
-  m_Name: ImageFillCurrent
+  m_Name: ImageFillMax
   m_EditorClassIdentifier: 
-  initialValue: 0
+  initialValue: 5
+  runtimeValue: 5

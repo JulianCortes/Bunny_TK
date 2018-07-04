@@ -5,12 +5,15 @@ using UnityEngine.UI;
 
 namespace Bunny_TK.DataDriven
 {
+    [ExecuteInEditMode]
     public class ImageFill : MonoBehaviour
     {
         public FloatVariable currentValue;
         public FloatVariable maxValue;
-        public Image targetImage;
 
+        public RangeFloat test;
+
+        public Image targetImage;
 
         // Update is called once per frame
         void Update()
