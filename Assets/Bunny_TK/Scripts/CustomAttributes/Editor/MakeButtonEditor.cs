@@ -38,7 +38,7 @@ using System.Globalization;
         //if (!typeof(IObjectInspectable).IsAssignableFrom(type))
         if (!typeof(MonoBehaviour).IsAssignableFrom(type))
                 return;
-
+ 
         _onInspectorGuiMethod = target.GetType().GetMethod("OnInspectorGUI", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             _onSceneGuiMethod = target.GetType().GetMethod("OnSceneGUI", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 

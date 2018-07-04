@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Bunny_TK
@@ -84,6 +85,13 @@ namespace Bunny_TK
                 transform.rotation = original.rotation;
             if (scale)
                 transform.localScale = original.localScale;
+        }
+
+        public static SerializedProperty FindPropertyRelative<T>(this SerializedProperty serialized, string propertyPath) where T: ScriptableObject
+        {
+            SerializedObject so = new SerializedObject(serialized.objectReferenceValue as T);
+            SerializedProperty prop = so.FindProperty(propertyPath);
+            return prop;
         }
     }
 }
