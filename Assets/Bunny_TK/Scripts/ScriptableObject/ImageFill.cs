@@ -11,8 +11,6 @@ namespace Bunny_TK.DataDriven
         public FloatVariable currentValue;
         public FloatVariable maxValue;
 
-        public RangeFloat test;
-
         public Image targetImage;
 
         // Update is called once per frame
@@ -23,7 +21,6 @@ namespace Bunny_TK.DataDriven
             if (targetImage == null) return;
 
             targetImage.fillAmount = currentValue.runtimeValue / maxValue.runtimeValue;
-
         }
 
     }

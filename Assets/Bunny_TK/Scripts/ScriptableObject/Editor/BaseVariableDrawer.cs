@@ -1,18 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 using Bunny_TK.EditorUtils;
 
 namespace Bunny_TK.DataDriven.CustomInspector
 {
-    [CustomPropertyDrawer(typeof(FloatVariable))]
-    public class FloatVariableDrawer : PropertyDrawer
+    //KNOWN ISSUES:
+    //  - Due to Unity serialization, drawers for Generics doesn't work, so children of BaseVariable class must be added manually here.
+    //  - Due to the default drawer for Vector3 when the window is too narrow, Vector3Variable has it's own custom drawer.
+
+    [CustomPropertyDrawer(typeof(BaseVariable<>), true)]
+    [CustomPropertyDrawer(typeof(IntVariable), true)]
+    [CustomPropertyDrawer(typeof(FloatVariable), true)]
+    [CustomPropertyDrawer(typeof(StringVariable), true)]
+    [CustomPropertyDrawer(typeof(Vector3Variable), true)]
+    public class BaseVariableDrawer : PropertyDrawer
     {
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
+            //If the property (ScriptableObject) is not assigned, it just draw a 'Default drawer'.
             if (property.objectReferenceValue == null)
                 return EditorGUIUtility.singleLineHeight;
+
             return EditorGUIUtility.singleLineHeight + (EditorHelper.SingleLineHeightWithSpacing * 2);
         }
 

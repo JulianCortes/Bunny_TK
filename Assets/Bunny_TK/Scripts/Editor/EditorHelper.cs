@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -9,6 +8,9 @@ namespace Bunny_TK.EditorUtils
 {
     public static class EditorHelper
     {
+        /// <summary>
+        /// Shorthand for EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing
+        /// </summary>
         public static float SingleLineHeightWithSpacing
         {
             get
@@ -30,9 +32,18 @@ namespace Bunny_TK.EditorUtils
             return prop;
         }
 
+        /// <summary>
+        /// Draws a Field with EditorGUI.PropertyField then checks and applies modified properties.
+        /// </summary>
+        /// <param name="contentPosition"></param>
+        /// <param name="label"></param>
+        /// <param name="property"></param>
+        /// <param name="propertyPath"></param>
         public static void ScriptablePropertyField(Rect contentPosition, string label, SerializedProperty property, string propertyPath)
         {
+            if (property == null) return;
             SerializedProperty targetProp = property.ScriptableFindPropertyRelative(propertyPath);
+            if (targetProp == null) return;
             EditorGUI.BeginChangeCheck();
             EditorGUI.PropertyField(contentPosition, targetProp, new GUIContent(label));
             if (EditorGUI.EndChangeCheck())
@@ -40,7 +51,7 @@ namespace Bunny_TK.EditorUtils
         }
 
         /// <summary>
-        /// Draw default field for property.
+        /// Draws default field for property.
         /// </summary>
         public static void DefaultField(Rect contentPosition, SerializedProperty property)
         {
