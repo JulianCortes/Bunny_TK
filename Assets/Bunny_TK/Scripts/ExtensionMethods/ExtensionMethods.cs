@@ -11,6 +11,12 @@ namespace Bunny_TK
         {
             return list[Random.Range(0, list.Count)];
         }
+        public static bool AddIfNotNull<T>(this IList<T> list, T value)
+        {
+            if (value == null) return false;
+            list.Add(value);
+            return true;
+        }
 
         private static Vector3 RandomPointInBox(this Random random, Vector3 center, Vector3 size)
         {
