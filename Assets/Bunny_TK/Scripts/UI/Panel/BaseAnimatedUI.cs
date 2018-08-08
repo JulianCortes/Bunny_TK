@@ -15,6 +15,7 @@ namespace Bunny_TK.UI
         {
             IsVisible = isVisible;
         }
+        [MethodButton]
         public virtual void ToggleVisible()
         {
             SetVisible(!IsVisible);

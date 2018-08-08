@@ -5,19 +5,24 @@ using UnityEngine.UI;
 
 namespace Bunny_TK.UI
 {
+    /// Used for UI that can be shown/hidden.
+    /// Main Functionalities:
+    ///     - panel visibility controls with events and UnityEvents.
+    ///     - can add/removed a button or toggle that controls visibility, even at runtime.
+    ///     - button or toggle visibility can be synced with panel's visibility.
     public class SimpleAdditionalUI : BaseAdditionalUI
     {
         [Header("References")]
         [SerializeField] protected Selectable selectable;
         [SerializeField] protected GameObject panel;
         [SerializeField] protected BaseAnimatedUI panelAnimatedUI;
-        [SerializeField] protected UnityEventBool customSetVisiblePanel;
+        [SerializeField] public UnityEventBool onVisible;
 
         [Header("Settings")]
         [SerializeField] protected bool autoAssignVisibilityToggleToSelectable = false;
         [SerializeField] protected bool isVisibleAtStart = false;
         [SerializeField] protected bool isSelectableVisibleAtStart = false;
-        [SerializeField, PropertySet("SelectableVisibility")] protected Visibility selectableVisibility;
+        [SerializeField, PropertySet("SelectableBehaviour")] protected Visibility selectableBehaviour;
 
         [Header("Current Status")]
         [SerializeField, PropertySet("IsVisible")]
@@ -33,7 +38,7 @@ namespace Bunny_TK.UI
             {
                 if (panelAnimatedUI != null)
                     return isVisible = panelAnimatedUI.IsVisible;
-                else if (customSetVisiblePanel.GetPersistentEventCount() > 0)
+                else if (onVisible.GetPersistentEventCount() > 0)
                     return isVisible;
                 else
                     return isVisible;
@@ -45,8 +50,8 @@ namespace Bunny_TK.UI
 
                 if (panelAnimatedUI != null)
                     panelAnimatedUI.SetVisible(value);
-                else if (customSetVisiblePanel.GetPersistentEventCount() > 0)
-                    customSetVisiblePanel.Invoke(value);
+                else if (onVisible.GetPersistentEventCount() > 0)
+                    onVisible.Invoke(value);
                 else
                     panel.gameObject.SetActive(value);
 
@@ -63,13 +68,6 @@ namespace Bunny_TK.UI
             }
         }
 
-        public bool HasSelectable
-        {
-            get
-            {
-                return hasSelectable = selectable != null;
-            }
-        }
         public Selectable VisibilitySelectable
         {
             get { return selectable; }
@@ -77,7 +75,17 @@ namespace Bunny_TK.UI
             {
                 //Maybe do something when it already has a button
                 selectable = value;
-                isSelectableVisible = value.gameObject.activeSelf;
+                if (value != null)
+                    isSelectableVisible = value.gameObject.activeSelf;
+                else
+                    isSelectableVisible = false;
+            }
+        }
+        public bool HasSelectable
+        {
+            get
+            {
+                return hasSelectable = selectable != null;
             }
         }
         public bool IsSelectableVisible
@@ -98,16 +106,16 @@ namespace Bunny_TK.UI
             }
         }
 
-        public Visibility SelectableVisibility
+        public Visibility SelectableBehaviour
         {
             get
             {
-                return selectableVisibility;
+                return selectableBehaviour;
             }
 
             set
             {
-                selectableVisibility = value;
+                selectableBehaviour = value;
                 UpdateSelectableVisibility(IsVisible);
             }
         }
@@ -164,7 +172,7 @@ namespace Bunny_TK.UI
 
         private void UpdateSelectableVisibility(bool mainVisibility)
         {
-            switch (selectableVisibility)
+            switch (selectableBehaviour)
             {
                 case Visibility.Indipendent:
                     return;
@@ -209,7 +217,7 @@ namespace Bunny_TK.UI
         {
             VisibilitySelectable = selectable;
 
-            if (assignToggleVisibility)
+            if (assignToggleVisibility && selectable != null)
             {
                 if (selectable.GetType() == typeof(Button))
                 {
@@ -229,6 +237,7 @@ namespace Bunny_TK.UI
         {
             AddVisibilityControlSelectable(selectable, true);
         }
+
         public virtual void AddCustomActionOnSelectablClick(Action custom)
         {
             if (selectable.GetType() == typeof(Button))

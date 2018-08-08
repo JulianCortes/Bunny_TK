@@ -5,6 +5,24 @@ using UnityEngine.UI;
 
 namespace Bunny_TK.UI
 {
+    ///Usefull to control visibility of a group of SimpleAdditionalUI
+    ///     - AdditionalUIs can be exclusive.
+    ///     - Can Add/Remove AdditionalUIs in the controlled group.
+    ///     - Button/Toggle of AdditionalUIs is NOT required.
+    ///     
+    ///TODO:
+    /// - AdditionalUI sync with Multipanel Visibility.
+    /// - Init Presets
+    ///     - Tabs like browsers
+    ///     - Instantiate UIs from prefabs
+    ///     - etc...
+    /// - Custom Editor for better readability in UnityEditor.
+    /// - Get UI at Index.
+    /// - Show/Hide All.
+    /// - Cycle UIs.
+    /// 
+    /// Stretch Goals:
+    /// - Custom UI exclusivity.
     public class MultiPanelUI : SimpleAdditionalUI
     {
         [Header("MultiPanelUI")]
@@ -146,8 +164,7 @@ namespace Bunny_TK.UI
                 if (additionalUIAreExclusive == false) return;
 
                 //Se i pannelli sono esclusivi nascondi gli altri.
-                //Da notare che impostando i pannelli a non visibili questo handler verrà richiamato,
-                //andando così nel blocco else.
+                //Da notare che impostando i pannelli a non visibili, questo handler verrà richiamato, andando così nel blocco else.
                 foreach (var sAddUI in additionalUIs)
                     if (sAddUI != simpleUI)
                         sAddUI.IsVisible = false;
@@ -166,17 +183,17 @@ namespace Bunny_TK.UI
                         //Click su un pannello già visibile quindi,
                         //Reimposto a visibile quello appena cliccato (se ha ancora il tab/bottone/toggle visibile)
                         //Altrimenti cerco il primo...
-                        if (wasVisible && simpleUI.IsSelectableVisible)
+                        if (wasVisible)
                             simpleUI.IsVisible = true;
                         else
-                            additionalUIs.Find(ui => ui.IsSelectableVisible)?.SetVisible(true);
+                            additionalUIs.First()?.SetVisible(true);
                     }
                 }
             }
         }
-        private void MultiPanelUI_OnChangedVisibility(BaseAdditionalUI obj)
+        private void MultiPanelUI_OnChangedVisibility(BaseAdditionalUI ui)
         {
-            if (obj.IsVisible)
+            if (ui.IsVisible)
                 VerifyIfShowSomething();
         }
         #endregion Visibility Handler
@@ -196,11 +213,11 @@ namespace Bunny_TK.UI
         }
         private void VerifyIfShowSomething()
         {
-            if (additionalUIs.Exists(ui => ui.IsVisible && ui.IsSelectableVisible) == false)
+            if (additionalUIs.Exists(ui => ui.IsVisible ) == false)
             {
                 if (alwaysShowSomething)
                 {
-                    additionalUIs.Find(ui => ui.IsSelectableVisible)?.SetVisible(true);
+                    additionalUIs.First()?.SetVisible(true);
                 }
             }
         }

@@ -21,7 +21,6 @@ namespace Bunny_TK.UI
             }
         }
 
-        [MethodButton]
         public virtual void ToggleVisible()
         {
             IsVisible = !IsVisible;
