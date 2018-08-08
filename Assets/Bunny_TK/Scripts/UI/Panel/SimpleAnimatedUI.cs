@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
-namespace Protom.WallT.Istruzione.Micro
+namespace Bunny_TK.UI
 {
     public class SimpleAnimatedUI : BaseAnimatedUI
     {

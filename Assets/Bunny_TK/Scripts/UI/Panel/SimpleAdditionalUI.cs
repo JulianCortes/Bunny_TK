@@ -1,61 +1,47 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace Protom.WallT.Istruzione.Micro
+namespace Bunny_TK.UI
 {
     public class SimpleAdditionalUI : BaseAdditionalUI
     {
-        public bool HasSelectable { get { return hasSelectable = selectable != null; } }
-        public bool HasPanel { get { return hasPanel = panel != null; } }
-        public Selectable VisibilityButton
-        {
-            get { return selectable; }
-            set
-            {
-                //Maybe do something when it already has a button
-                selectable = value;
-            }
-        }
+        [Header("References")]
+        [SerializeField] protected Selectable selectable;
+        [SerializeField] protected GameObject panel;
+        [SerializeField] protected BaseAnimatedUI panelAnimatedUI;
+        [SerializeField] protected UnityEventBool customSetVisiblePanel;
 
-        public virtual bool IsSelectableVisible
-        {
-            get
-            {
-                if (HasSelectable == false || IsVisible == false)
-                    return isSelectableVisible = false;
+        [Header("Settings")]
+        [SerializeField] protected bool autoAssignVisibilityToggleToSelectable = false;
+        [SerializeField] protected bool isVisibleAtStart = false;
+        [SerializeField] protected bool isSelectableVisibleAtStart = false;
+        [SerializeField, PropertySet("SelectableVisibility")] protected Visibility selectableVisibility;
 
-                return selectable.gameObject.activeSelf;
-            }
-            set
-            {
-                if (HasSelectable == false) return;
+        [Header("Current Status")]
+        [SerializeField, PropertySet("IsVisible")]
+        private bool isVisible;
+        [SerializeField, PropertySet("IsSelectableVisible")]
+        private bool isSelectableVisible;
+        private bool hasSelectable;
 
-                isSelectableVisible = value;
-                selectable.gameObject.SetActive(value);
-            }
-        }
-        public virtual bool IsPanelVisible
+        #region Properties
+        public override bool IsVisible
         {
             get
             {
-                if (HasPanel == false)
-                    return isPanelVisible = false;
-
                 if (panelAnimatedUI != null)
-                    return panelAnimatedUI.IsVisible;
+                    return isVisible = panelAnimatedUI.IsVisible;
                 else if (customSetVisiblePanel.GetPersistentEventCount() > 0)
-                    return isPanelVisible;
+                    return isVisible;
                 else
-                    return isPanelVisible = panel.gameObject.activeSelf;
+                    return isVisible;
             }
+
             set
             {
-                if (HasPanel == false) return;
+                isVisible = value;
 
                 if (panelAnimatedUI != null)
                     panelAnimatedUI.SetVisible(value);
@@ -71,157 +57,240 @@ namespace Protom.WallT.Istruzione.Micro
                         tog.isOn = value;
                 }
 
-                isPanelVisible = value;
-                OnPanelChangedVisibility?.Invoke(this);
-            }
-        }
-        public override bool IsVisible
-        {
-            get
-            {
-                return isVisible;
-            }
+                UpdateSelectableVisibility(value);
 
-            set
-            {
-                isVisible = value;
-                if (isPanelVisibleOnVisible)
-                    IsPanelVisible = value;
-                if (isButtonVisibleOnVisible)
-                    IsSelectableVisible = value;
                 base.IsVisible = value;
             }
         }
 
-        public event Action<SimpleAdditionalUI> OnPanelChangedVisibility;
+        public bool HasSelectable
+        {
+            get
+            {
+                return hasSelectable = selectable != null;
+            }
+        }
+        public Selectable VisibilitySelectable
+        {
+            get { return selectable; }
+            private set
+            {
+                //Maybe do something when it already has a button
+                selectable = value;
+                isSelectableVisible = value.gameObject.activeSelf;
+            }
+        }
+        public bool IsSelectableVisible
+        {
+            get
+            {
+                if (HasSelectable == false)
+                    return isSelectableVisible = false;
 
-        [Header("Graphic References")]
-        [FormerlySerializedAs("button")]
-        [SerializeField] protected Selectable selectable;
-        [SerializeField] protected GameObject panel;
-        [SerializeField] protected BaseAnimatedUI panelAnimatedUI;
-        [SerializeField] protected UnityEventBool customSetVisiblePanel;
+                return selectable.gameObject.activeSelf;
+            }
+            set
+            {
+                if (HasSelectable == false) return;
 
-        [Header("Settings")]
-        public bool autoAssignToggleToButton = false;
-        public bool isVisibleAtStart = false;
-        public bool isButtonVisibleAtStart = false;
-        public bool isButtonVisibleOnVisible = true;
-        public bool isPanelVisibleAtStart = false;
-        public bool isPanelVisibleOnVisible = false;
+                isSelectableVisible = value;
+                selectable.gameObject.SetActive(value);
+            }
+        }
 
-        private bool hasSelectable;
-        private bool hasPanel;
+        public Visibility SelectableVisibility
+        {
+            get
+            {
+                return selectableVisibility;
+            }
 
-        [Header("Current Status (Clickable!!)")]
-        [SerializeField, PropertySet("IsVisible")]
-        private bool isVisible;
-        [SerializeField, PropertySet("IsSelectableVisible")]
-        private bool isSelectableVisible;
-        [SerializeField, PropertySet("IsPanelVisible")]
-        private bool isPanelVisible;
+            set
+            {
+                selectableVisibility = value;
+                UpdateSelectableVisibility(IsVisible);
+            }
+        }
+        #endregion Properties
 
+        #region Unity CallBacks
         protected virtual void OnEnable()
         {
-            if (autoAssignToggleToButton)
+            if (autoAssignVisibilityToggleToSelectable && HasSelectable)
             {
-                if (HasSelectable)
-                {
-                    AddVisibilityControlButton();
-                }
+                AddVisibilityControlSelectable();
             }
         }
         protected virtual void Start()
         {
             IsVisible = isVisibleAtStart;
-            IsSelectableVisible = isButtonVisibleAtStart;
-            IsPanelVisible = isPanelVisibleAtStart;
+            IsSelectableVisible = isSelectableVisibleAtStart;
+            UpdateSelectableVisibility(IsVisible);
         }
         protected virtual void OnDisable()
         {
-            if (autoAssignToggleToButton)
+            if (autoAssignVisibilityToggleToSelectable && HasSelectable)
             {
-                if (HasSelectable)
-                {
-                    RemoveVisibilityControlButton();
-                }
+                RemoveVisibilityControlSelectable();
             }
         }
+        #endregion Unity CallBacks
 
-        /// <summary>
-        /// Sets the internal status.
-        /// </summary>
-        /// <param name="isPanelVisible"></param>
-        public virtual void UpdateVisiblePanel(bool isPanelVisible)
+        #region Visibility Controls
+        public virtual void SetVisible(bool isVisible)
         {
-            this.isPanelVisible = isPanelVisible;
+            IsVisible = isVisible;
         }
-        public virtual void ToggleVisibilityPanel()
+        public virtual void ToggleVisibility()
         {
-            IsPanelVisible = !IsPanelVisible;
-        }
-        public virtual void SetVisibilityPanel(bool visibility)
-        {
-            IsPanelVisible = visibility;
+            IsVisible = !IsVisible;
         }
         public virtual void ToggleVisibilityButton()
         {
             IsSelectableVisible = !IsSelectableVisible;
         }
 
-        public virtual void RemoveVisibilityControlButton()
+        public virtual void SetVisibleAll(bool isVisible)
         {
-            if (!HasSelectable) return;
-
-            if (selectable.GetType() == typeof(Button))
-            {
-                ((Button)selectable).onClick.RemoveListener(ToggleVisibilityPanel);
-            }
-            else if (selectable.GetType() == typeof(Toggle))
-            {
-                ((Toggle)selectable).onValueChanged.RemoveListener(SetVisibilityPanel);
-            }
-
-            autoAssignToggleToButton = false;
+            IsVisible = isVisible;
+            IsSelectableVisible = isVisible;
         }
-        public virtual void AddVisibilityControlButton(Selectable selectable, bool assignToggleVisibility)
+        public virtual void ToggleVisibleAll()
         {
-            VisibilityButton = selectable;
+            bool val = !IsVisible;
+            IsSelectableVisible = val;
+            IsVisible = val;
+        }
+
+        private void UpdateSelectableVisibility(bool mainVisibility)
+        {
+            switch (selectableVisibility)
+            {
+                case Visibility.Indipendent:
+                    return;
+                case Visibility.SyncWithHidden:
+                    if (mainVisibility == false)
+                        IsSelectableVisible = mainVisibility;
+                    return;
+                case Visibility.SyncWithVisible:
+                    if (mainVisibility == true)
+                        IsSelectableVisible = mainVisibility;
+                    return;
+                case Visibility.SyncAll:
+                    IsSelectableVisible = mainVisibility;
+                    return;
+                case Visibility.Inverted:
+                    IsSelectableVisible = !mainVisibility;
+                    return;
+                default:
+                    return;
+            }
+        }
+        #endregion Visibility Controls
+
+        #region Custom Visibility Controls
+        public virtual void AddVisibilityControlSelectable(GameObject selectable, bool assignToggleVisibility)
+        {
+            Button button = selectable.GetComponent<Button>();
+            if (button != null)
+            {
+                AddVisibilityControlSelectable(button, assignToggleVisibility);
+                return;
+            }
+
+            Toggle toggle = selectable.GetComponent<Toggle>();
+            if (toggle != null)
+            {
+                AddVisibilityControlSelectable(toggle, assignToggleVisibility);
+                return;
+            }
+        }
+        public virtual void AddVisibilityControlSelectable(Selectable selectable, bool assignToggleVisibility)
+        {
+            VisibilitySelectable = selectable;
 
             if (assignToggleVisibility)
             {
                 if (selectable.GetType() == typeof(Button))
                 {
-                    ((Button)this.selectable).onClick.AddListener(this.ToggleVisibilityPanel);
+                    Button button = this.selectable as Button;
+                    button.onClick.RemoveListener(ToggleVisibility);
+                    button.onClick.AddListener(ToggleVisibility);
                 }
                 else if (selectable.GetType() == typeof(Toggle))
                 {
-                    ((Toggle)this.selectable).onValueChanged.AddListener(this.SetVisibilityPanel);
+                    Toggle toggle = this.selectable as Toggle;
+                    toggle.onValueChanged.RemoveListener(SetVisible);
+                    toggle.onValueChanged.AddListener(SetVisible);
                 }
             }
-
         }
-        public virtual void AddVisibilityControlButton()
+        public virtual void AddVisibilityControlSelectable()
         {
-            AddVisibilityControlButton(selectable, true);
+            AddVisibilityControlSelectable(selectable, true);
         }
-
-        public virtual void SetCustomActionButton(Action custom)
+        public virtual void AddCustomActionOnSelectablClick(Action custom)
         {
+            if (selectable.GetType() == typeof(Button))
+                AddCustomActionOnButtonClick(custom);
+            else if (selectable.GetType() == typeof(Toggle))
+            {
+                AddCustomActionOnToggleClick((bool temp) =>
+                {
+                    custom.Invoke();
+                });
+            }
+        }
+        public virtual void AddCustomActionOnButtonClick(Action custom)
+        {
+            if (HasSelectable == false) return;
             if (selectable.GetType() == typeof(Button))
             {
                 ((Button)selectable).onClick.AddListener(custom.Invoke);
             }
-            else if (selectable.GetType() == typeof(Toggle))
+        }
+        public virtual void AddCustomActionOnToggleClick(Action<bool> custom)
+        {
+            if (HasSelectable == false) return;
+            if (selectable.GetType() == typeof(Toggle))
             {
-                ((Toggle)selectable).onValueChanged.AddListener(SetVisibilityPanel);
+                ((Toggle)selectable).onValueChanged.AddListener(custom.Invoke);
             }
-
         }
 
+        public virtual void RemoveVisibilityControlSelectable()
+        {
+            if (!HasSelectable) return;
+
+            if (selectable.GetType() == typeof(Button))
+            {
+                ((Button)selectable).onClick.RemoveListener(ToggleVisibility);
+            }
+            else if (selectable.GetType() == typeof(Toggle))
+            {
+                ((Toggle)selectable).onValueChanged.RemoveListener(SetVisible);
+            }
+
+            autoAssignVisibilityToggleToSelectable = false;
+        }
+        #endregion Custom Visibility Controls
     }
 
     [System.Serializable]
     public class UnityEventBool : UnityEvent<bool> { }
 
+    public enum Visibility
+    {
+        Indipendent = 0,
+        /// <summary>
+        /// Hide when main is hidden, but do NOT show when main is visible.
+        /// </summary>
+        SyncWithHidden = 1,
+        /// <summary>
+        /// Show when main is visible, but do NOT hide when main is hidden.
+        /// </summary>
+        SyncWithVisible = 2,
+        SyncAll = 3,
+        Inverted = 4
+    }
 }

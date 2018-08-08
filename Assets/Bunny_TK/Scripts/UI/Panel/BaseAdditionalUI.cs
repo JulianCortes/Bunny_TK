@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Protom.WallT.Istruzione.Micro
+namespace Bunny_TK.UI
 {
     public abstract class BaseAdditionalUI : MonoBehaviour
     {
