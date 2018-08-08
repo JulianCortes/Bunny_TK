@@ -1,0 +1,24 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Protom.WallT.Istruzione.Micro
+{
+    public abstract class BaseAnimatedUI : MonoBehaviour
+    {
+        [SerializeField]
+        protected Animator animator;
+        public virtual bool IsInTransition { get; set; }
+        public virtual bool IsVisible { get; set; }
+
+        public virtual void SetVisible(bool isVisible)
+        {
+            IsVisible = isVisible;
+        }
+        [MethodButton]
+        public virtual void ToggleVisible()
+        {
+            SetVisible(!IsVisible);
+        }
+    }
+}

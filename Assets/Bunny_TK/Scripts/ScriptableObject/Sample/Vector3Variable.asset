@@ -11,5 +11,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99d0d7359142c4047abb70d9e73fb5e9, type: 3}
   m_Name: Vector3Variable
   m_EditorClassIdentifier: 
+  description: 
   initialValue: {x: 0, y: 0, z: 0}
   runtimeValue: {x: 0, y: 0, z: 0}

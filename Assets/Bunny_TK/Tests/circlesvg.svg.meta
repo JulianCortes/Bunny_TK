@@ -1,0 +1,44 @@
+fileFormatVersion: 2
+guid: 266fc6ee507f35b44a7560bff662d596
+ScriptedImporter:
+  fileIDToRecycleName:
+    100000: gameObject/circlesvg
+    400000: gameObject/circlesvg/Transform
+    21200000: gameObject/circlesvg/SpriteRenderer
+    21300000: sprite
+    100100000: gameObject
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: a57477913897c46af95d590f580878bd, type: 3}
+  SvgPixelsPerUnit: 100
+  GradientResolution: 128
+  Alignment: 0
+  CustomPivot: {x: 0, y: 0}
+  AdvancedMode: 0
+  PredefinedResolutionIndex: 0
+  TargetResolution: 2160
+  ResolutionMultiplier: 1
+  StepDistance: 10
+  SamplingStepDistance: 100
+  MaxCordDeviationEnabled: 0
+  MaxCordDeviation: 1
+  MaxTangentAngleEnabled: 0
+  MaxTangentAngle: 5
+  spriteData:
+    TessellationDetail: 0
+    SpriteRect:
+      name: circlesvgSprite
+      originalName: 
+      pivot: {x: 0.50207084, y: 0.5020708}
+      alignment: 0
+      border: {x: 0, y: 0, z: 0, w: 0}
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 83
+        height: 83
+      spriteID: 56ece062abec84a45a335df8049d5e6b
+    PhysicsOutlines: []

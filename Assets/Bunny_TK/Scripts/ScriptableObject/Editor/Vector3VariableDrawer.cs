@@ -49,7 +49,7 @@ namespace Bunny_TK.DataDriven.CustomInspector
             EditorHelper.ScriptablePropertyField(contentPosition, "Runtime Value", property, "runtimeValue");
             EditorGUI.EndDisabledGroup();
 
-            property.serializedObject.Update();
+            //property.serializedObject.Update();
             EditorGUI.indentLevel = 0;
             EditorGUI.EndProperty();
         }

@@ -19,7 +19,6 @@ namespace Bunny_TK.DataDriven
         {
             _button = GetComponent<Button>();
             _button.onClick.AddListener(OnClick);
-
             _audioSource = GetComponent<AudioSource>();
         }
 

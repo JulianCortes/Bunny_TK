@@ -1,6 +1,6 @@
-﻿using UnityEditor;
+﻿using Bunny_TK.EditorUtils;
+using UnityEditor;
 using UnityEngine;
-using Bunny_TK.EditorUtils;
 
 namespace Bunny_TK.DataDriven.CustomInspector
 {
@@ -9,10 +9,11 @@ namespace Bunny_TK.DataDriven.CustomInspector
     //  - Due to the default drawer for Vector3 when the window is too narrow, Vector3Variable has it's own custom drawer.
 
     [CustomPropertyDrawer(typeof(BaseVariableGeneric<>), true)]
-    [CustomPropertyDrawer(typeof(IntVariable), true)]
-    [CustomPropertyDrawer(typeof(FloatVariable), true)]
-    [CustomPropertyDrawer(typeof(StringVariable), true)]
-    [CustomPropertyDrawer(typeof(Vector3Variable), true)]
+    //[CustomPropertyDrawer(typeof(IntVariable), true)]
+    //[CustomPropertyDrawer(typeof(FloatVariable), true)]
+    //[CustomPropertyDrawer(typeof(StringVariable), true)]
+    //[CustomPropertyDrawer(typeof(Vector3Variable), true)]
+    [CustomPropertyDrawer(typeof(BaseVariable), true)]
     public class BaseVariableDrawer : PropertyDrawer
     {
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
@@ -37,7 +38,7 @@ namespace Bunny_TK.DataDriven.CustomInspector
             //Moving down and resetting labelWidth
             contentPosition.height = EditorGUIUtility.singleLineHeight;
             contentPosition.y += EditorHelper.SingleLineHeightWithSpacing;
-            EditorGUI.indentLevel += 1;
+            EditorGUI.indentLevel++;
             EditorGUIUtility.labelWidth = 0f;
 
             //Initial Value Prop
@@ -47,12 +48,13 @@ namespace Bunny_TK.DataDriven.CustomInspector
             contentPosition.y += EditorHelper.SingleLineHeightWithSpacing;
 
             //Runtime Value Prop
-            EditorGUI.BeginDisabledGroup(!Application.isPlaying);
+            //EditorGUI.BeginDisabledGroup(!Application.isPlaying);
             EditorHelper.ScriptablePropertyField(contentPosition, "Runtime Value", property, "runtimeValue");
-            EditorGUI.EndDisabledGroup();
+            //EditorGUI.EndDisabledGroup();
 
-            property.serializedObject.Update();
-            EditorGUI.indentLevel = 0;
+            //WORKAROUND to force update GUI
+            //EditorUtility.SetDirty(property.serializedObject.targetObject);
+            EditorGUI.indentLevel--;
             EditorGUI.EndProperty();
         }
     }

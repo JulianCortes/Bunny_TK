@@ -45,6 +45,10 @@ namespace Bunny_TK.DataDriven
 
     public abstract class BaseVariable : ScriptableObject
     {
+        [SerializeField]
+        [TextArea(1, 3)]
+        protected string description;
+
         public abstract string GetStringInitialValue();
         public abstract string GetStringRuntimeValue();
     }

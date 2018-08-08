@@ -11,7 +11,8 @@ namespace Bunny_TK.DataDriven
     {
         public BaseVariable baseVariable;
 
-        private Text textUI;
+        public Text textUI;
+        
 
         private void OnEnable()
         {
